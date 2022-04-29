@@ -2,17 +2,68 @@ from calendar import c
 import tkinter as tk
 from tkinter import *
 from  tkinter import ttk
-import tkinter.font as font
+from tkinter import messagebox
+from tkinter import font
+import mysql.connector
+
+#db connection
+def db_connection():
+    global mydb,mycursor
+    mydb=mysql.connector.connect(
+        host='localhost',
+        user='root',
+        password='root',
+        database='finsys_tkinter'
+        )
+    mycursor = mydb.cursor()
+
+
+#saving_customer datas here
+def save_data():
+    db_connection()
+    global title,first_name,last_name,company,location,gst,gstin,pan_no,email,website,mobile,street,city,state,pin,country,shipstreet,shipcity,shipstate,shippin,shipcountry
+    title=title.get()
+    first_name=first_name.get()
+    last_name=last_name.get()
+    company=company.get()
+    location=location.get()
+    gst=gst.get()
+    gstin=gstin.get()
+    pan_no=pan_no.get()
+    email=email.get()
+    website=website.get()
+    mobile=mobile.get()
+    street=street.get()
+    city=city.get()
+    state=state.get()
+    pin=pin.get()
+    country=country.get()
+    shipstreet=shipstreet.get()
+    shipcity=shipcity.get()
+    shipstate=shipstate.get()
+    shippin=shippin.get()
+    shipcountry=shipcountry.get()
+
+    sql='SELECT * FROM customer WHERE firstname=%s AND lastname=%s'# selecting entire table from db,taking username , nd check the existance
+    val=(first_name,last_name)
+    mycursor.execute(sql,val)
+    if mycursor.fetchone()is not None:
+        messagebox.showerror('error', 'First Name and Last Name already exist!!')
+    else:
+        sql="INSERT INTO customer VALUES(%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)" #adding values into db
+        val=(title,first_name,last_name,company,location,gst,gstin,pan_no,email,website,mobile,street,city,state,pin,country,shipstreet,shipcity,shipstate,shippin,shipcountry)
+        mycursor.execute(sql,val)
+        mydb.commit()
+        messagebox.showinfo('New Customer Added')
 
 
 
 
-
-editcustomer_form = tk.Tk()
-editcustomer_form.title("finsYs")
-editcustomer_form.geometry("2000x2000")
-editcustomer_form['bg']='#2f516a'
-wrappen=ttk.LabelFrame(editcustomer_form)
+add_new_customer_form = tk.Tk()
+add_new_customer_form.title("finsYs")
+add_new_customer_form.geometry("2000x2000")
+add_new_customer_form['bg']='#2f516a'
+wrappen=ttk.LabelFrame(add_new_customer_form)
 mycanvas=Canvas(wrappen)
 mycanvas.pack(side=LEFT,fill="both",expand="yes")
 yscrollbar=ttk.Scrollbar(wrappen,orient='vertical',command=mycanvas.yview)
@@ -194,4 +245,4 @@ submit_button.place(x=600,y=500)
 
 
 
-editcustomer_form.mainloop()
+add_new_customer_form.mainloop()
