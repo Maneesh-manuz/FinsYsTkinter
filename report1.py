@@ -3,8 +3,41 @@ from tkinter import *
 from  tkinter import ttk
 from PIL import ImageTk,Image
 import tkinter.font as font
+import tkinter as tk
+from tkinter import *
+from tkinter import VERTICAL, ttk
+import tkinter.font as font
+from tkcalendar import DateEntry, Calendar
 
+import click
+from requests import options
+from xml.dom.minicompat import StringTypes
 
+from tkinter import StringVar
+import mysql.connector
+mydata = mysql.connector.connect(
+    host='localhost', user='root', password='', database='finsys-tkinter')
+cur = mydata.cursor()
+
+def time():
+    def getdetails():
+        date = timedate.get()
+        name = timename.get()
+        cus = timecus.get()
+        checkbill = timebill.get()
+        bill = timbill.get()
+        timecheck = time.get()
+        starttime = hr.get()+':'+min.get()
+        endtime = eh.get()+':'+em.get()
+        ttime = timeh.get()+':'+timem.get()
+        text = timetext.get("1.0", "end")
+        tg = '''INSERT INTO timeactivity (timdate,timname,timcus,timcheck,timebill,timecheckk,timestart,timeend,tyme,timedes) 
+        VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)'''
+        cur.execute(tg, [(date), (name), (cus), (checkbill), (bill),
+                    (timecheck), (starttime), (endtime), (ttime), (text)])
+        # print(date,name,cus,checkbill,bill,timecheck,starttime,endtime,ttime,text)
+        mydata.commit()
+        win.destroy()
 
 def add_custom():
     import addcustomer_form
@@ -48,7 +81,7 @@ select_customer_input=StringVar()
 select_customer_lab.place(x=30,y=35,height=15)
 drop2=ttk.Combobox(form_frame,textvariable = select_customer_input)
 drop2['values']=("All dates", "Custom","Today","This month","This financial year")
-drop2.place(x=30,y=50,height=40,width=200)
+drop2.place(x=30,y=50,height=30,width=200)
 wrappen.pack(fill='both',expand='yes',)
 
 

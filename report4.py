@@ -48,7 +48,7 @@ select_customer_input=StringVar()
 select_customer_lab.place(x=30,y=35,height=15)
 drop2=ttk.Combobox(form_frame,textvariable = select_customer_input)
 drop2['values']=("All dates", "Custom","Today","This month","This financial year")
-drop2.place(x=30,y=50,height=40,width=200)
+drop2.place(x=30,y=50,height=30,width=200)
 wrappen.pack(fill='both',expand='yes',)
 
 

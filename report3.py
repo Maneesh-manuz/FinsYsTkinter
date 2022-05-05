@@ -3,7 +3,11 @@ from tkinter import *
 from  tkinter import ttk
 from PIL import ImageTk,Image
 import tkinter.font as font
-
+import mysql.connector
+mydata = mysql.connector.connect(
+    host='localhost', user='root', password='', database='finsys-tkinder')
+cur = mydata.cursor()
+# sherryag
 
 
 def add_custom():
@@ -48,7 +52,7 @@ select_customer_input=StringVar()
 select_customer_lab.place(x=30,y=35,height=15)
 drop2=ttk.Combobox(form_frame,textvariable = select_customer_input)
 drop2['values']=("All dates", "Custom","Today","This month","This financial year")
-drop2.place(x=30,y=50,height=40,width=200)
+drop2.place(x=30,y=50,height=30,width=200)
 wrappen.pack(fill='both',expand='yes',)
 
 
@@ -78,8 +82,15 @@ img_label=Label(form_frame,text="infox", font=('times new roman', 25, 'bold'),bg
 img_label.place(x=350,y=180)
 
 
-set = ttk.Treeview(form_frame,height=2)
-set.place(x=145,y=250)
+
+style = ttk.Style()
+style.theme_use('default')
+style.configure('Treeview', background='silver',
+                    foreground='black', fieldbackground='#243e54')
+style.map('Treeview', background=[('selected', 'green')])
+set = ttk.Treeview(form_frame, height=8, columns=(
+        1, 2, 3, 4, 5, 6, 7,8), show='headings')
+
 
 
 set['columns']= ('CUSTOMER NAME', 'TRANSACTION TYPE','CURRENT','0-30','30-60','60-90','90 AND OVER','TOTAL')
@@ -104,8 +115,15 @@ set.heading("60-90",text="60-90",anchor=CENTER)
 set.heading("90 AND OVER",text="90 AND OVER",anchor=CENTER)
 set.heading("TOTAL",text="TOTAL",anchor=CENTER)
 
-i=1
-set.insert("",'end',iid=1,
-		values=('TOTAL','','$0','','','','','$0'))
+cur.execute(
+        "SELECT customer_name,transaction_type,total,current,0-30,30-60,60-90,90 and over FROM report 3")
+val = cur.fetchall()
+if val:
+        for x in val:
+            set.insert('', 'end', values=(
+                x[0], x[1], x[2], x[3], x[4], x[5],x[6],x[7]))
+set.place(relx=0, rely=0.2, relwidth=1, relheight=0.6)
+
+set.bind("<<TreeviewSelect>>")
 
 editinvoice_form.mainloop()
