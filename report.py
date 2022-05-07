@@ -19,11 +19,12 @@ def selected(event):
     else :
         import report
 
-def add_invoice():
-    x=4
-window = Tk()
-window.title('fynsYs')
-window.geometry("700x700")
+
+window = tk.Tk()
+window.title("finsYs")
+width=window.winfo_screenwidth()
+height=window.winfo_screenheight()
+window.geometry("%dx%d" %(width,height))
 window['bg']='#2f516a'
 headingfont=font.Font(family='Helvitica', size=24,)
 inv_heading= Label(window, borderwidth=1, relief="raised",width=60,font=headingfont,bg='#243e55', fg='#fff',height=4)

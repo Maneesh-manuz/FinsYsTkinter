@@ -1,17 +1,59 @@
+from cProfile import label
 import tkinter as tk
 from tkinter import *
+from tkcalendar import DateEntry
 from  tkinter import ttk
 from PIL import ImageTk,Image
 import tkinter.font as font
+
+from click import command, option
+from requests import options
+
+#destroyframe
+def clear_frame():
+     sub_frame.destroy()
+
+def custom(event):
+    if menu.get()=='Custom':
+        clear_frame()
+        sub_frame=Frame(mycanvas,width=600,height=100,bg='#243e55')
+        mycanvas.create_window((460,140),window=sub_frame,anchor="nw")
+        l1=Label(sub_frame,text="From",bg='#243e55',fg='#fff',font=('times new roman', 16,))
+        l1.place(x=60,y=15,height=20)
+        l1_input=DateEntry(sub_frame,bg='#fff',font=('Arial', 12, 'bold'))
+        l1_input.place(x=60,y=45,height=30,width=200)
+        l2=Label(sub_frame,text="To",bg='#243e55',fg='#fff',font=('times new roman', 16, ))
+        l2.place(x=300,y=15,height=20)
+        l2_input=DateEntry(sub_frame,bg='#fff',font=('Arial', 12, 'bold'))
+        l2_input.place(x=300,y=45,height=30,width=200)
+    elif menu.get()=='Today':
+        sub_frame=Frame(mycanvas,width=600,height=100,bg='#243e55')
+        mycanvas.create_window((460,140),window=sub_frame,anchor="nw")
+    elif menu.get()=='This month':
+        sub_frame=Frame(mycanvas,width=600,height=100,bg='#243e55')
+        mycanvas.create_window((460,140),window=sub_frame,anchor="nw")
+    elif menu.get()=='This financial year':
+        sub_frame=Frame(mycanvas,width=600,height=100,bg='#243e55')
+        mycanvas.create_window((460,140),window=sub_frame,anchor="nw")
+    elif menu.get()=='All dates':
+        sub_frame=Frame(mycanvas,width=600,height=100,bg='#243e55')
+        mycanvas.create_window((460,140),window=sub_frame,anchor="nw")
+
+
+
+    else:
+         clear_frame()
+
 
 
 
 def add_custom():
     import addcustomer_form
-
 editinvoice_form = tk.Tk()
 editinvoice_form.title("finsYs")
-editinvoice_form.geometry("5000x2000")
+width=editinvoice_form.winfo_screenwidth()
+height=editinvoice_form.winfo_screenheight()
+editinvoice_form.geometry("%dx%d" %(width,height))
 editinvoice_form['bg']='#2f516a'
 wrappen=ttk.LabelFrame(editinvoice_form)
 mycanvas=Canvas(wrappen)
@@ -43,13 +85,24 @@ form_lable.place(x=0,y=0)
 
 
 
-select_customer_lab=tk.Label(form_frame,text="report period",bg='#243e55',fg='#fff')
+select_customer_lab=tk.Label(form_frame,text="report period",bg='#243e55',fg='#fff',font=('times new roman', 16, 'bold'))
 select_customer_input=StringVar()
-select_customer_lab.place(x=30,y=35,height=15)
-drop2=ttk.Combobox(form_frame,textvariable = select_customer_input)
-drop2['values']=("All dates", "Custom","Today","This month","This financial year")
-drop2.place(x=30,y=50,height=30,width=200)
+select_customer_lab.place(x=30,y=20,height=20)
+# drop2=ttk.Combobox(form_frame,textvariable = select_customer_input, command=custom )
+# drop2['values']=("All dates", "Custom","Today","This month","This financial year")
+# drop2.place(x=30,y=55,height=30,width=200)
+menu= StringVar()
+options=["All dates", "Custom","Today","This month","This financial year"]
+drop= OptionMenu(form_frame, menu,*options,command=custom)
+drop.config(bg='#243e55', fg="white",font=('Arial',18))
+drop['menu'].config(bg='#2f516a',fg="white",font=('Arial',18))
+drop.place(x=30,y=55,height=30,width=200)
+sub_frame=Frame(mycanvas,width=600,height=100,bg='#243e55')
+mycanvas.create_window((460,140),window=sub_frame,anchor="nw")
 wrappen.pack(fill='both',expand='yes',)
+
+
+
 
 
 

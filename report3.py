@@ -1,15 +1,48 @@
+from cProfile import label
 import tkinter as tk
 from tkinter import *
+from tkcalendar import DateEntry
 from  tkinter import ttk
 from PIL import ImageTk,Image
 import tkinter.font as font
-import mysql.connector
-mydata = mysql.connector.connect(
-    host='localhost', user='root', password='', database='finsys-tkinder')
-cur = mydata.cursor()
-# sherryag
+
+from click import command, option
+from requests import options
+
+#destroyframe
+def clear_frame():
+     sub_frame.destroy()
+
+def custom(event):
+    if menu.get()=='Custom':
+        clear_frame()
+        sub_frame=Frame(mycanvas,width=600,height=100,bg='#243e55')
+        mycanvas.create_window((460,140),window=sub_frame,anchor="nw")
+        l1=Label(sub_frame,text="From",bg='#243e55',fg='#fff',font=('times new roman', 16,))
+        l1.place(x=60,y=15,height=20)
+        l1_input=DateEntry(sub_frame,bg='#fff',font=('Arial', 12, 'bold'))
+        l1_input.place(x=60,y=45,height=30,width=200)
+        l2=Label(sub_frame,text="To",bg='#243e55',fg='#fff',font=('times new roman', 16, ))
+        l2.place(x=300,y=15,height=20)
+        l2_input=DateEntry(sub_frame,bg='#fff',font=('Arial', 12, 'bold'))
+        l2_input.place(x=300,y=45,height=30,width=200)
+    elif menu.get()=='Today':
+        sub_frame=Frame(mycanvas,width=600,height=100,bg='#243e55')
+        mycanvas.create_window((460,140),window=sub_frame,anchor="nw")
+    elif menu.get()=='This month':
+        sub_frame=Frame(mycanvas,width=600,height=100,bg='#243e55')
+        mycanvas.create_window((460,140),window=sub_frame,anchor="nw")
+    elif menu.get()=='This financial year':
+        sub_frame=Frame(mycanvas,width=600,height=100,bg='#243e55')
+        mycanvas.create_window((460,140),window=sub_frame,anchor="nw")
+    elif menu.get()=='All dates':
+        sub_frame=Frame(mycanvas,width=600,height=100,bg='#243e55')
+        mycanvas.create_window((460,140),window=sub_frame,anchor="nw")
 
 
+
+    else:
+         clear_frame()
 def add_custom():
     import addcustomer_form
 
@@ -47,13 +80,22 @@ form_lable.place(x=0,y=0)
 
 
 
-select_customer_lab=tk.Label(form_frame,text="report period",bg='#243e55',fg='#fff')
+select_customer_lab=tk.Label(form_frame,text="report period",bg='#243e55',fg='#fff',font=('times new roman', 16, 'bold'))
 select_customer_input=StringVar()
-select_customer_lab.place(x=30,y=35,height=15)
-drop2=ttk.Combobox(form_frame,textvariable = select_customer_input)
-drop2['values']=("All dates", "Custom","Today","This month","This financial year")
-drop2.place(x=30,y=50,height=30,width=200)
+select_customer_lab.place(x=30,y=20,height=20)
+# drop2=ttk.Combobox(form_frame,textvariable = select_customer_input, command=custom )
+# drop2['values']=("All dates", "Custom","Today","This month","This financial year")
+# drop2.place(x=30,y=55,height=30,width=200)
+menu= StringVar()
+options=["All dates", "Custom","Today","This month","This financial year"]
+drop= OptionMenu(form_frame, menu,*options,command=custom)
+drop.config(bg='#243e55', fg="white",font=('Arial',18))
+drop['menu'].config(bg='#2f516a',fg="white",font=('Arial',18))
+drop.place(x=30,y=55,height=30,width=200)
+sub_frame=Frame(mycanvas,width=600,height=100,bg='#243e55')
+mycanvas.create_window((460,140),window=sub_frame,anchor="nw")
 wrappen.pack(fill='both',expand='yes',)
+
 
 
 
@@ -115,15 +157,15 @@ set.heading("60-90",text="60-90",anchor=CENTER)
 set.heading("90 AND OVER",text="90 AND OVER",anchor=CENTER)
 set.heading("TOTAL",text="TOTAL",anchor=CENTER)
 
-cur.execute(
-        "SELECT customer_name,transaction_type,total,current,0-30,30-60,60-90,90 and over FROM report 3")
-val = cur.fetchall()
-if val:
-        for x in val:
-            set.insert('', 'end', values=(
-                x[0], x[1], x[2], x[3], x[4], x[5],x[6],x[7]))
-set.place(relx=0, rely=0.2, relwidth=1, relheight=0.6)
+# cur.execute(
+#         "SELECT customer_name,transaction_type,total,current,0-30,30-60,60-90,90 and over FROM report 3")
+# val = cur.fetchall()
+# if val:
+#         for x in val:
+#             set.insert('', 'end', values=(
+#                 x[0], x[1], x[2], x[3], x[4], x[5],x[6],x[7]))
+# set.place(relx=0, rely=0.2, relwidth=1, relheight=0.6)
 
-set.bind("<<TreeviewSelect>>")
+# set.bind("<<TreeviewSelect>>")
 
 editinvoice_form.mainloop()
