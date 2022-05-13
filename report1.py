@@ -70,7 +70,7 @@ mycanvas.create_window((10,20),window=heading_frame,anchor="nw")
 invoice_heading= tk.Label(heading_frame, text="PROFIT & LOSS",fg='#fff',bg='#243e55',height=2,bd=5,relief="groove",font=('Times', 25),width=68)
 invoice_heading.pack()
 
-#form fields
+#form fields 1234
 
 form_frame=Frame(mycanvas,width=1240,height=200,bg='#243e55')
 mycanvas.create_window((10,130),window=form_frame,anchor="nw")
